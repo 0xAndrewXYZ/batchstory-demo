@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F7F6F3">
+  <title>Cocoahead Dashboard</title>
+  <link rel="icon" href="brand/batchstory-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="brand/batchstory-icon-apple-180.png">
+  <link rel="preload" href="fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/zilla-slab-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="fresh.js"></script>
+  <script src="config.js"></script>
+</head>
+<body class="admin shell">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="appbar">
+    <div class="appbar-in">
+      <button type="button" class="btn btn-secondary btn-icon side-open" id="side-open" aria-label="Menu" aria-controls="side-nav" aria-expanded="false"><i data-icon="menu"></i></button>
+      <a class="brand" href="dashboard.html"><img src="icons/cocoahead-64.png" alt="" width="24" height="24" data-brand-logo><img class="wordmark" alt="" data-brand-wordmark hidden><span data-brand="company">Cocoahead</span></a>
+      <nav aria-label="Main" id="side-nav">
+        <a href="dashboard.html" data-nav="home" aria-current="page"><i data-icon="house" data-size="16"></i>Home</a>
+        <div class="nav-group" role="group" aria-labelledby="nav-g-production">
+          <span class="nav-g" id="nav-g-production">Production</span>
+          <a href="dashboard.html#inventory" data-nav="stock"><i data-icon="boxes" data-size="16"></i>Inventory</a>
+          <a href="dashboard.html#ferments" data-nav="ferments"><i data-icon="bean" data-size="16"></i>Ferments</a>
+          <a href="dashboard.html#roasting" data-nav="roasting"><i data-icon="flame" data-size="16"></i>Roasting</a>
+          <a href="dashboard.html#making" data-nav="making"><i data-icon="blend" data-size="16"></i>Making</a>
+          <a href="dashboard.html#batches" data-nav="batches"><i data-icon="cookie" data-size="16"></i>Batches</a>
+          <a href="dashboard.html#season" data-nav="season"><i data-icon="chart-line" data-size="16"></i>Season</a>
+        </div>
+        <div class="nav-group" role="group" aria-labelledby="nav-g-records">
+          <span class="nav-g" id="nav-g-records">Records</span>
+          <a href="entries.html" data-nav="entries" id="entries-link"><i data-icon="list" data-size="16"></i>Entries</a>
+          <a href="labels.html" data-nav="labels"><i data-icon="tag" data-size="16"></i>Labels</a>
+          <a href="finances.html" data-nav="finances" id="finances-link"><i data-icon="banknote" data-size="16"></i>Finances</a>
+          <a href="exports.html" data-nav="exports" id="exports-link"><i data-icon="download" data-size="16"></i>Exports</a>
+          <a href="scan.html" data-nav="scan" id="scan-link" data-scan-link hidden><i data-icon="image" data-size="16"></i>Scan a form</a>
+        </div>
+        <div class="nav-group" role="group" aria-labelledby="nav-g-setup">
+          <span class="nav-g" id="nav-g-setup">Admin</span>
+          <a href="people.html" data-nav="people" id="people-link"><i data-icon="users" data-size="16"></i>People</a>
+          <a href="settings.html#track" data-nav="forms" id="track-link"><i data-icon="clipboard-list" data-size="16"></i>Questions</a>
+          <a href="lists.html" data-nav="lists" id="lists-link"><i data-icon="list-checks" data-size="16"></i>Answer choices</a>
+          <a href="settings.html" data-nav="company" id="settings-link"><i data-icon="settings" data-size="16"></i>Settings</a>
+          <a href="settings.html#history" data-nav="history" id="history-link"><i data-icon="history" data-size="16"></i>Change log</a>
+        </div>
+      </nav>
+      <div class="appbar-tools"><span class="by-lockup" data-brand-poweredby hidden></span></div>
+    </div>
+  </header>
+  <nav class="tabbar" aria-label="Sections" id="tabbar">
+    <a href="dashboard.html" data-bar="home" aria-current="page"><i data-icon="house" data-size="20"></i><span>Home</span></a>
+    <a href="dashboard.html#inventory" data-bar="production"><i data-icon="bean" data-size="20"></i><span>Production</span></a>
+    <a href="entries.html" data-bar="entries"><i data-icon="list" data-size="20"></i><span>Entries</span></a>
+    <button type="button" id="more-open" data-bar="more" aria-controls="side-nav" aria-expanded="false"><i data-icon="menu" data-size="20"></i><span>More</span></button>
+  </nav>
+
+  <main id="content" class="page dash" data-at="now">
+    <div class="page-head">
+      <div class="page-head-main">
+        <nav class="crumb" id="crumb" aria-label="Breadcrumb" hidden><a href="#ferments">Ferments</a><span aria-hidden="true">›</span><span id="crumb-here" aria-current="page"></span></nav>
+        <h1 id="page-title" tabindex="-1">Home</h1>
+        <p class="page-sub" id="take">Loading…</p>
+      </div>
+      <div class="page-tools">
+        <select id="season" aria-label="Season"></select>
+        <span class="meta" id="updated"></span>
+        <button type="button" class="btn btn-secondary btn-icon" id="refresh" aria-label="Refresh" title="Refresh"><i data-icon="refresh-cw"></i></button>
+      </div>
+    </div>
+
+    <div id="connect" class="notice warn" role="status" hidden>
+      <i data-icon="info" data-size="20"></i>
+      <div class="notice-body">
+        <span class="notice-title">This browser is not connected to the Sheet yet.</span>
+        <span><b>Admins:</b> <button type="button" class="btn btn-primary btn-sm" id="connect-signin">Sign in</button> with your username and password, or open the admin link from the Sheet's Cocoahead menu.</span>
+        <span>Everyone else: open the setup link from the Sheet's Cocoahead menu here, or paste it:</span>
+        <div class="inline-form">
+          <input type="text" id="connect-link" placeholder="Paste the setup link" aria-label="Setup link">
+          <button type="button" class="btn btn-secondary" id="connect-btn">Connect</button>
+        </div>
+      </div>
+    </div>
+    <div id="problem" class="notice bad" role="alert" hidden><i data-icon="circle-alert" data-size="20"></i><div class="notice-body" id="problem-text"></div></div>
+
+    <!-- The views. On a laptop the sidebar chooses one; on a phone or tablet this strip does, once you are in Production. -->
+    <div class="subtabs" id="dash-tabs" role="tablist" aria-label="Production">
+      <button type="button" role="tab" id="tab-now" aria-controls="view-now" aria-selected="true" data-tab="now">Home</button>
+      <button type="button" role="tab" id="tab-stock" aria-controls="view-stock" aria-selected="false" data-tab="stock" tabindex="-1">Inventory</button>
+      <button type="button" role="tab" id="tab-ferments" aria-controls="view-ferments" aria-selected="false" data-tab="ferments" tabindex="-1">Ferments</button>
+      <button type="button" role="tab" id="tab-roasting" aria-controls="view-roasting" aria-selected="false" data-tab="roasting" tabindex="-1" hidden>Roasting</button>
+      <button type="button" role="tab" id="tab-making" aria-controls="view-making" aria-selected="false" data-tab="making" tabindex="-1" hidden>Making</button>
+      <button type="button" role="tab" id="tab-batches" aria-controls="view-batches" aria-selected="false" data-tab="batches" tabindex="-1" hidden>Batches</button>
+      <button type="button" role="tab" id="tab-season" aria-controls="view-season" aria-selected="false" data-tab="season" tabindex="-1">Season</button>
+    </div>
+
+    <div data-view="now" id="view-now" role="tabpanel" aria-labelledby="tab-now">
+    <!-- app 1.25.0: the stage strip leads on a laptop or tablet (one row); on a phone dashboard.js homeOrder() puts Needs attention first -->
+    <section id="stock-card" aria-labelledby="flow-h">
+      <div class="sec-head sec-head-info"><h2 class="sec-title" id="flow-h">Where the beans are</h2><span class="infotip"><button type="button" class="info-btn" id="flow-info-btn" aria-label="About these figures" aria-expanded="false" aria-describedby="flow-info"><i data-icon="info" data-size="16"></i></button><span class="info-tip" id="flow-info" role="tooltip">Added up from the entries each time this page opens. If a figure looks wrong, fix the entry it came from on the Entries page.</span></span></div>
+      <div id="flow-wait"></div>
+      <div class="flow" id="flow">
+        <ul class="statstrip" id="stock"></ul>
+        <ul class="statstrip" id="stock-roast" hidden></ul>
+        <ul class="statstrip" id="stock-making" hidden></ul>
+      </div>
+    </section>
+
+    <section id="attn-sec" aria-labelledby="attn-h">
+      <h2 class="sec-title" id="attn-h">Needs attention</h2>
+      <div id="attn-banner"></div>
+      <div id="attn-wait"></div>
+      <ul class="attn" id="attn" hidden></ul>
+      <p class="attn-none" id="attn-none" hidden>Nothing needs attention.</p>
+      <ul class="attn-done" id="attn-done" hidden></ul>
+    </section>
+
+    <section id="tasting-recent-card" aria-labelledby="tasting-recent-h" hidden>
+      <h2 class="sec-title" id="tasting-recent-h">Recent tasting notes</h2>
+      <ul class="tnotes" id="tasting-recent"></ul>
+    </section>
+    </div>
+
+    <div data-view="stock" id="view-stock" role="tabpanel" aria-labelledby="tab-stock" hidden>
+    <section aria-labelledby="stages-h">
+      <h2 class="sec-title" id="stages-h">By stage</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table" id="stock-stages"></table></div></div>
+      <p class="note sec-foot" id="stock-note" hidden></p>
+    </section>
+
+    <!-- 1.24.0: what is in the stage that was picked in the table above (#inventory/<stage>) -->
+    <section id="stage-sec" aria-labelledby="stage-h" hidden>
+      <div class="sec-head"><h2 class="sec-title stage-name" id="stage-h" tabindex="-1"></h2><span class="note" id="stage-sum"></span>
+        <a class="btn btn-ghost btn-sm" id="stage-clear" href="#inventory"><i data-icon="x" data-size="16"></i>All stages</a></div>
+      <div class="tablebox"><div class="table-wrap"><table class="table rowlist" id="stage-table"></table></div><p class="table-empty" id="stage-none" hidden></p></div>
+    </section>
+
+    <section id="live-card" aria-labelledby="live-h" hidden>
+      <h2 class="sec-title" id="live-h">In progress</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table rowlist" id="live"></table></div></div>
+    </section>
+
+    <section id="bags-sec" aria-labelledby="bags-h">
+      <div class="sec-head"><h2 class="sec-title" id="bags-h">Bagged, waiting to roast</h2><span class="note" id="bags-count"></span></div>
+      <div class="tablebox"><div class="table-wrap"><table class="table rowlist" id="stock-bags"></table></div><p class="table-empty" id="bags-none" hidden></p></div>
+    </section>
+    </div>
+
+    <div data-view="season" id="view-season" role="tabpanel" aria-labelledby="tab-season" hidden>
+    <section id="tiles" aria-labelledby="tiles-h">
+      <div class="sec-head"><h2 class="sec-title" id="tiles-h">The season in numbers</h2><a class="btn btn-secondary btn-sm" id="report-link" href="report.html" hidden><i data-icon="printer" data-size="16"></i>Season report (PDF)</a></div>
+      <ul class="statstrip" id="tiles-in"></ul>
+      <p class="note juice-total" id="juice-total" hidden></p>
+    </section>
+    <!-- 1.24.0: the season from wet beans to batches, with the yield of each step and what it is of (model.js seasonFlow) -->
+    <section id="flow-sec" aria-labelledby="flow-sec-h" hidden>
+      <h2 class="sec-title" id="flow-sec-h">Through the stages</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table" id="flow-table"></table></div></div>
+    </section>
+    <div id="days-check" class="notice warn" role="status" hidden><i data-icon="triangle-alert" data-size="20"></i><div class="notice-body" id="days-check-text"></div></div>
+
+    <div class="pickbar" id="pick-bar" role="status" hidden></div>
+
+    <div class="grid2">
+      <section class="card">
+        <div class="card-head"><h2>Yield by ferment</h2></div>
+        <p class="note">Dry weight as a share of wet weight, oldest ferment first. The dashed line is the season's yield. Click a bar to look at one ferment.</p>
+        <div class="chart" id="yield-chart"></div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>Centre temperature by day</h2></div>
+        <p class="note">Average centre reading at each check, by day since loading. One ferment is in colour: the one you picked, or the newest.</p>
+        <div class="chart" id="temp-chart"></div>
+      </section>
+    </div>
+
+    <section class="card" id="moist-compare-card" hidden>
+      <div class="card-head"><h2>Moisture while drying</h2></div>
+      <p class="note">Moisture on each day of drying, counted from unloading. One ferment is in colour: the one you picked, or the newest. The dashed line is your target, set on Answer choices.</p>
+      <div class="stat-row" id="moist-stats"></div>
+      <div class="chart" id="moist-compare-chart"></div>
+    </section>
+
+    <section id="dry-places-card" aria-labelledby="dry-places-h" hidden>
+      <h2 class="sec-title" id="dry-places-h">Drying places compared</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table" id="dry-places"></table></div></div>
+      <p class="note sec-foot">Where each ferment dried (the place used most in its drying checks), for ferments whose outside is known to be dry. Outside dry is the days from unloading to the first day the outside was dry: under 2 is too fast, 4 or more is too slow. Days to target count from unloading.</p>
+    </section>
+
+    <section id="compare-card" aria-labelledby="compare-h" hidden>
+      <h2 class="sec-title" id="compare-h">Compare ferments</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table" id="compare"></table></div></div>
+      <p class="note sec-foot">Finished ferments grouped by plan, by shape (boxes and days) and by whether juice was taken. Yield is each group's dry weight ÷ wet weight.</p>
+    </section>
+
+    <section aria-labelledby="farms-h">
+      <h2 class="sec-title" id="farms-h">By farm</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table farms" id="farms"></table></div></div>
+      <p class="note sec-foot">Share of dry lbs divides each ferment's dry weight among its farms by the wet weight each delivered. <span id="no-money-note" hidden>Prices and payments show only for admins and people who can see money.</span></p>
+    </section>
+    </div>
+
+    <div data-view="ferments" id="view-ferments" role="tabpanel" aria-labelledby="tab-ferments" hidden>
+    <section id="ferments-list" aria-label="All ferments">
+      <div class="tablebar">
+        <label class="search"><i data-icon="search" data-size="16"></i><input type="search" id="all-q" placeholder="Search ferment or farm" aria-label="Search ferments"></label>
+        <label class="filter">Stage <select name="stage" id="all-stage"><option value="">All</option><option value="fermenting">Fermenting</option><option value="drying">Drying</option><option value="bagged">Bagged</option></select></label>
+        <button type="button" class="btn btn-secondary btn-sm" id="all-best" aria-pressed="false" hidden>Best first</button>
+        <span class="count" id="all-count" aria-live="polite"></span>
+      </div>
+      <div class="tablebox">
+        <div class="table-wrap"><table class="table rowlist wide" id="all"></table></div>
+        <p class="table-empty" id="all-none" hidden>No ferment matches. Clear the search or the filter.</p>
+      </div>
+    </section>
+
+    <section id="passport" aria-labelledby="page-title" hidden>
+      <div class="rec-head">
+        <p class="rec-state"><span id="rec-stage"></span><span class="note" id="rec-sub"></span></p>
+        <div class="rec-actions">
+          <a id="labels-link" class="btn btn-secondary btn-sm" href="labels.html"><i data-icon="printer" data-size="16"></i>Print labels</a>
+          <a id="batch-link" class="btn btn-secondary btn-sm" href="batch.html">Batch page (no prices)</a>
+        </div>
+      </div>
+      <section aria-labelledby="glance-h">
+        <h2 class="sec-title" id="glance-h">At a glance</h2>
+        <ul class="statstrip" id="pp-glance"></ul>
+      </section>
+      <div class="rec-body">
+        <nav class="rec-nav pagenav" id="pp-nav" aria-label="Sections of this ferment"></nav>
+        <div class="rec-secs" id="pp">
+          <section id="pp-s-ferment" data-sec="Fermentation" aria-labelledby="pp-h-ferment">
+            <h2 class="sec-title" id="pp-h-ferment" tabindex="-1">Fermentation</h2>
+            <div id="pp-f-ferment"></div>
+            <div class="card" id="pp-chart-card"><div class="card-head"><h3>Temperatures at each check</h3></div><p class="note">Average of up to five readings. Hover for every reading.</p><div class="chart" id="pp-chart"></div></div>
+            <div class="tablebox"><div class="table-wrap"><table class="table" id="pp-checks"></table></div></div>
+          </section>
+          <section id="pp-s-drying" data-sec="Drying" aria-labelledby="pp-h-drying">
+            <h2 class="sec-title" id="pp-h-drying" tabindex="-1">Drying and bagging</h2>
+            <div id="pp-f-drying"></div>
+            <div class="card" id="pp-moisture-card" hidden><div class="card-head"><h3>Moisture while drying</h3></div><p class="note">Average of the readings each day, by day of drying. The ringed point is the final moisture; the dashed line is the target.</p><div class="chart" id="pp-moisture-chart"></div></div>
+            <div class="tablebox"><div class="table-wrap"><table class="table" id="pp-drying"></table></div><p class="table-empty" id="pp-drying-none" hidden>No drying notes recorded for this ferment.</p></div>
+          </section>
+          <section id="pp-s-intakes" data-sec="Deliveries" aria-labelledby="pp-h-intakes">
+            <h2 class="sec-title" id="pp-h-intakes" tabindex="-1">Where the beans came from</h2>
+            <div class="tablebox"><div class="table-wrap"><table class="table" id="pp-intakes"></table></div></div>
+            <p class="note sec-foot">Estimated dry lbs splits the dry weight by each delivery's share of the wet weight.</p>
+          </section>
+          <section id="pp-roasts-card" data-sec="Roasting" aria-labelledby="pp-h-roasts" hidden>
+            <h2 class="sec-title" id="pp-h-roasts" tabindex="-1">Roasting</h2>
+            <div class="tablebox"><div class="table-wrap"><table class="table" id="pp-roasts"></table></div></div>
+          </section>
+          <section id="pp-making-card" data-sec="Made into" aria-labelledby="pp-h-making" hidden>
+            <h2 class="sec-title" id="pp-h-making" tabindex="-1">Where its beans ended up</h2>
+            <p class="note" id="pp-making-note"></p>
+            <div class="tablebox"><div class="table-wrap"><table class="table" id="pp-making"></table></div></div>
+          </section>
+          <section id="pp-tasting-card" data-sec="Tasting" aria-labelledby="pp-h-tasting" hidden>
+            <div class="sec-head"><h2 class="sec-title" id="pp-h-tasting" tabindex="-1">Tasting notes</h2><a id="pp-tasting-add" class="btn btn-secondary btn-sm" href="index.html">Add a tasting note</a></div>
+            <p class="note">About this ferment and the roasts, packages and batches made from it.</p>
+            <ul class="tnotes" id="pp-tasting"></ul>
+          </section>
+          <section id="pp-photos-card" data-sec="Photos" aria-labelledby="pp-h-photos" hidden>
+            <h2 class="sec-title" id="pp-h-photos" tabindex="-1">Photos</h2>
+            <p class="note">Taken on the phones at checks. Tap one to see it larger.</p>
+            <div id="pp-photos"></div>
+          </section>
+          <p id="pp-more-row" hidden></p>
+        </div>
+      </div>
+    </section>
+    <div id="rec-missing" hidden></div>
+    </div>
+
+    <div data-view="roasting" id="view-roasting" role="tabpanel" aria-labelledby="tab-roasting" hidden>
+    <section aria-label="Roasting in numbers">
+      <ul class="statstrip" id="roast-tiles"></ul>
+      <p class="note sec-foot" id="roast-take"></p>
+    </section>
+
+    <section aria-labelledby="roasts-h">
+      <h2 class="sec-title" id="roasts-h">All roasts</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table wide" id="roast-table"></table></div></div>
+      <p class="note sec-foot">Weights are in lbs, temperatures in °C. Minutes count from the start of the roast.</p>
+    </section>
+
+    <div class="grid2">
+      <section class="card">
+        <div class="card-head"><h2>Nib yield by roast</h2></div>
+        <p class="note">Nibs as a share of the beans that went in, for roasts that have been winnowed. Click a bar to open the ferment.</p>
+        <div class="chart" id="roast-yield-chart"></div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>Roast shape</h2></div>
+        <p class="note">Each line runs from the time the start temperature was reached to the time the maximum was reached.</p>
+        <div class="chart" id="roast-shape-chart"></div>
+      </section>
+    </div>
+
+    <section aria-labelledby="ledger-h">
+      <h2 class="sec-title" id="ledger-h">Ferment ledger</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table wide" id="ledger"></table></div></div>
+      <p class="note sec-foot">What became of each ferment's beans, step by step. "Left to roast" shows 0 once a roast is marked as the ferment's last.</p>
+    </section>
+
+    <section id="shipments-card" aria-labelledby="shipments-h">
+      <h2 class="sec-title" id="shipments-h">Pallets</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table wide" id="shipments"></table></div></div>
+    </section>
+
+    <section id="local-card" aria-labelledby="local-h" hidden>
+      <h2 class="sec-title" id="local-h">Local use</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table wide" id="local-use"></table></div></div>
+      <p class="note sec-foot">Packages kept for local use are taken here instead of shipped. Weights are in lbs.</p>
+    </section>
+    </div>
+
+    <div data-view="making" id="view-making" role="tabpanel" aria-labelledby="tab-making" hidden>
+    <section aria-label="Making in numbers">
+      <ul class="statstrip" id="making-tiles"></ul>
+      <p class="note sec-foot" id="making-take"></p>
+    </section>
+
+    <section aria-labelledby="batches-h">
+      <h2 class="sec-title" id="batches-h">All batches</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table wide" id="making-table"></table></div></div>
+      <p class="note sec-foot">Fineness and conching are recorded for chocolate only; cocoa butter and tea balls have weights and a temperature.</p>
+    </section>
+
+    <div class="grid2">
+      <section class="card">
+        <div class="card-head"><h2>Conching time and notes</h2></div>
+        <p class="note">Chocolate batches by conching time, shortest first, with the words written about each one.</p>
+        <div id="making-conche"></div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>Time to the target fineness</h2></div>
+        <p class="note">Hours to reach the target microns against how much of the mix was nibs. One dot per finished chocolate batch.</p>
+        <div class="chart" id="making-scatter"></div>
+      </section>
+    </div>
+
+    <section id="arrivals-card" aria-labelledby="arrivals-h">
+      <h2 class="sec-title" id="arrivals-h">Arrival checks</h2>
+      <div class="tablebox"><div class="table-wrap"><table class="table wide" id="arrivals"></table></div></div>
+      <div id="arrivals-by-ferment" hidden>
+        <h3 class="sub-h">Not OK, by ferment</h3>
+        <div class="tablebox"><div class="table-wrap"><table class="table" id="arrivals-by-ferment-table"></table></div></div>
+      </div>
+    </section>
+    </div>
+
+    <!-- Batches (app 1.19.0): every chocolate batch, the best-tasting first; a row opens the batch's whole story (batch.html?c=) -->
+    <div data-view="batches" id="view-batches" role="tabpanel" aria-labelledby="tab-batches" hidden>
+    <section id="batches-list" aria-label="All batches">
+      <div class="tablebar">
+        <label class="search"><i data-icon="search" data-size="16"></i><input type="search" id="batches-q" placeholder="Search batch, product, ferment or farm" aria-label="Search batches"></label>
+        <label class="filter">Product <select name="product" id="batches-product"><option value="">All</option></select></label>
+        <label class="filter">Flags <select name="flag" id="batches-flag"><option value="">All</option><option value="off">Something off</option><option value="before">Off before making</option><option value="arrival">Arrival not OK</option><option value="clear">Nothing flagged</option></select></label>
+        <span class="count" id="batches-count" aria-live="polite"></span>
+      </div>
+      <div class="tablebox">
+        <div class="table-wrap"><table class="table rowlist wide" id="batches-table"></table></div>
+        <p class="table-empty" id="batches-none" hidden>No batch matches. Clear the search or the filters.</p>
+      </div>
+      <p class="note sec-foot">The score is the average of the tasting notes about the batch itself, out of 10. Notes about its packages, roasts and ferments are in the batch's story.</p>
+    </section>
+    </div>
+
+    <p class="page-foot"><span class="by-lockup" data-brand-poweredby hidden></span></p>
+  </main>
+  <script src="vendor/d3.min.js"></script>
+  <script src="icons.js"></script>
+  <script src="common.js"></script>
+  <script src="admin.js"></script>
+  <script src="signin.js"></script>
+  <script src="model.js"></script>
+  <script src="dash-roast.js"></script>
+  <script src="dash-making.js"></script>
+  <script src="dash-tasting.js"></script>
+  <script src="photos.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

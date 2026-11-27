@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F7F6F3">
+  <title>Print labels · Cocoahead</title>
+  <link rel="icon" href="brand/batchstory-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="brand/batchstory-icon-apple-180.png">
+  <link rel="preload" href="fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="config.js"></script>
+</head>
+<body class="field print-page">
+  <header class="appbar">
+    <div class="appbar-in">
+      <a class="brand" href="./"><img src="icons/cocoahead-64.png" alt="" width="28" height="28" data-brand-logo><img class="wordmark" alt="" data-brand-wordmark hidden><span data-brand="company">Cocoahead</span></a>
+      <span class="spacer"></span>
+      <div class="appbar-tools"><a class="btn btn-secondary" href="./">Back to the app</a></div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <h1>Print labels</h1>
+        <p class="page-sub">Package labels for what has been packed on this tablet. This page works with no signal; printing needs a printer the tablet can reach without the internet.</p>
+      </div>
+    </div>
+    <section class="card controls" id="controls">
+      <div class="row">
+        <label>Roast<select id="roast"></select></label>
+        <label>Label size<select id="size"></select></label>
+        <label>Copies of each label<input type="number" id="copies" min="1" max="4" step="1" inputmode="numeric" value="2"></label>
+        <button type="button" class="btn btn-primary" id="print"><i data-icon="printer"></i>Print</button>
+      </div>
+      <fieldset class="pick-packages" id="packages"><legend>Packages to print</legend></fieldset>
+      <p class="msg" id="msg" role="status"></p>
+    </section>
+    <div class="sheet" id="sheet"></div>
+  </main>
+  <script src="vendor/qrcode.js"></script>
+  <script src="icons.js"></script>
+  <script src="common.js"></script>
+  <script src="db.js"></script>
+  <script src="labelkit.js"></script>
+  <script src="schema.js"></script>
+  <script src="print.js"></script>
+</body>
+</html>

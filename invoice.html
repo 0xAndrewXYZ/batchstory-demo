@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F7F6F3">
+  <title>Cocoahead invoice</title>
+  <link rel="icon" href="brand/batchstory-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="brand/batchstory-icon-apple-180.png">
+  <link rel="preload" href="fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/zilla-slab-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="report.css">
+  <script src="fresh.js"></script>
+  <script src="config.js"></script>
+</head>
+<body class="admin shell report invoice">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="appbar">
+    <div class="appbar-in">
+      <button type="button" class="btn btn-secondary btn-icon side-open" id="side-open" aria-label="Menu" aria-controls="side-nav" aria-expanded="false"><i data-icon="menu"></i></button>
+      <a class="brand" href="dashboard.html"><img src="icons/cocoahead-64.png" alt="" width="24" height="24" data-brand-logo><img class="wordmark" alt="" data-brand-wordmark hidden><span data-brand="company">Cocoahead</span></a>
+      <nav aria-label="Main" id="side-nav">
+        <a href="dashboard.html" data-nav="home"><i data-icon="house" data-size="16"></i>Home</a>
+        <div class="nav-group" role="group" aria-labelledby="nav-g-production">
+          <span class="nav-g" id="nav-g-production">Production</span>
+          <a href="dashboard.html#inventory" data-nav="stock"><i data-icon="boxes" data-size="16"></i>Inventory</a>
+          <a href="dashboard.html#ferments" data-nav="ferments"><i data-icon="bean" data-size="16"></i>Ferments</a>
+          <a href="dashboard.html#roasting" data-nav="roasting"><i data-icon="flame" data-size="16"></i>Roasting</a>
+          <a href="dashboard.html#making" data-nav="making"><i data-icon="blend" data-size="16"></i>Making</a>
+          <a href="dashboard.html#batches" data-nav="batches"><i data-icon="cookie" data-size="16"></i>Batches</a>
+          <a href="dashboard.html#season" data-nav="season"><i data-icon="chart-line" data-size="16"></i>Season</a>
+        </div>
+        <div class="nav-group" role="group" aria-labelledby="nav-g-records">
+          <span class="nav-g" id="nav-g-records">Records</span>
+          <a href="entries.html" data-nav="entries" id="entries-link"><i data-icon="list" data-size="16"></i>Entries</a>
+          <a href="labels.html" data-nav="labels"><i data-icon="tag" data-size="16"></i>Labels</a>
+          <a href="finances.html" data-nav="finances" aria-current="page" id="finances-link"><i data-icon="banknote" data-size="16"></i>Finances</a>
+          <a href="exports.html" data-nav="exports" id="exports-link"><i data-icon="download" data-size="16"></i>Exports</a>
+          <a href="scan.html" data-nav="scan" id="scan-link" data-scan-link hidden><i data-icon="image" data-size="16"></i>Scan a form</a>
+        </div>
+        <div class="nav-group" role="group" aria-labelledby="nav-g-setup">
+          <span class="nav-g" id="nav-g-setup">Admin</span>
+          <a href="people.html" data-nav="people" id="people-link"><i data-icon="users" data-size="16"></i>People</a>
+          <a href="settings.html#track" data-nav="forms" id="track-link"><i data-icon="clipboard-list" data-size="16"></i>Questions</a>
+          <a href="lists.html" data-nav="lists" id="lists-link"><i data-icon="list-checks" data-size="16"></i>Answer choices</a>
+          <a href="settings.html" data-nav="company" id="settings-link"><i data-icon="settings" data-size="16"></i>Settings</a>
+          <a href="settings.html#history" data-nav="history" id="history-link"><i data-icon="history" data-size="16"></i>Change log</a>
+        </div>
+      </nav>
+      <div class="appbar-tools"><span class="by-lockup" data-brand-poweredby hidden></span></div>
+    </div>
+  </header>
+  <nav class="tabbar" aria-label="Sections" id="tabbar">
+    <a href="dashboard.html" data-bar="home"><i data-icon="house" data-size="20"></i><span>Home</span></a>
+    <a href="dashboard.html#inventory" data-bar="production"><i data-icon="bean" data-size="20"></i><span>Production</span></a>
+    <a href="entries.html" data-bar="entries"><i data-icon="list" data-size="20"></i><span>Entries</span></a>
+    <button type="button" id="more-open" data-bar="more" aria-controls="side-nav" aria-expanded="false" aria-current="page"><i data-icon="menu" data-size="20"></i><span>More</span></button>
+  </nav>
+
+    <main id="content" class="rpt-main">
+    <div class="page-head no-print">
+      <div>
+        <h1 id="inv-title">Invoice</h1>
+        <p class="page-sub">To print, or to save as a PDF: choose "Save as PDF" in the print window. It shows prices, so keep it private.</p>
+      </div>
+      <div class="page-tools">
+        <a class="btn btn-secondary" href="finances.html?view=invoices" id="inv-back"><i data-icon="arrow-left"></i>Invoices</a>
+        <button type="button" class="btn btn-primary" id="print" hidden><i data-icon="printer"></i>Print / Save as PDF</button>
+      </div>
+    </div>
+
+    <div id="problem" class="notice bad no-print" role="alert" hidden><i data-icon="circle-alert" data-size="20"></i><div class="notice-body" id="problem-text"></div></div>
+    <div id="no-money" class="notice warn no-print" role="status" hidden>
+      <i data-icon="info" data-size="20"></i>
+      <div class="notice-body">
+        <span class="notice-title">Invoices show prices, and this link cannot see them.</span>
+        <span>Ask an admin to open it, or to mark you as someone who can see money on the People page.</span>
+      </div>
+    </div>
+    <div id="changed" class="notice warn no-print" role="status" hidden>
+      <i data-icon="triangle-alert" data-size="20"></i>
+      <div class="notice-body">
+        <span class="notice-title">The pallet changed since this invoice was made.</span>
+        <span>This invoice shows the packages and weights of the day it was made. To bill what is on the pallet now, cancel it on the Invoices page and make a new one.</span>
+      </div>
+    </div>
+    <div id="loading" class="no-print"></div>
+    <div id="sheet" class="rpt-sheet" aria-live="polite"></div>
+  </main>
+  <footer class="page no-print"><p class="page-foot"><span class="by-lockup" data-brand-poweredby hidden></span></p></footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="icons.js"></script>
+  <script src="admin.js"></script>
+  <script src="signin.js"></script>
+  <script src="finance-model.js"></script>
+  <script src="invoice.js"></script>
+</body>
+</html>

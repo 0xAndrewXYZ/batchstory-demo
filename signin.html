@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F7F6F3">
+  <meta name="referrer" content="no-referrer">
+  <title>Cocoahead Sign in</title>
+  <link rel="icon" href="brand/batchstory-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="brand/batchstory-icon-apple-180.png">
+  <link rel="preload" href="fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="fresh.js"></script>
+  <script src="config.js"></script>
+</head>
+<body class="admin auth-page">
+  <main class="auth">
+    <section id="signin" class="card signin" aria-labelledby="signin-title">
+      <div class="auth-brand">
+        <img src="icons/cocoahead-64.png" alt="" width="40" height="40" data-brand-logo>
+        <span class="auth-company" data-brand="company">Cocoahead</span>
+      </div>
+      <h2 id="signin-title">Sign in</h2>
+      <p class="card-sub" id="signin-sub"></p>
+      <p class="notice warn signin-why" id="signin-why" role="status" hidden><i data-icon="info" data-size="20"></i><span id="signin-why-text"></span></p>
+      <div id="auth-body"><p class="card-sub">Loading…</p></div>
+    </section>
+    <p class="by-lockup full" data-brand-lockup hidden></p>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="icons.js"></script>
+  <script src="signin-page.js"></script>
+</body>
+</html>

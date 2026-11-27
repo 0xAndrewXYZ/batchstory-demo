@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cocoahead Paper Forms</title>
+  <link rel="preload" href="fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="ui.css">
+  <style>
+    /* A printout: always black on white, on screen and on paper, whatever theme the device or the app is set to (1.24.0).
+       The ui.css tokens this page uses (the two buttons) are pinned to their light values here, above both dark rules. */
+    html:root:not([data-no-theme]) { /* one notch above ui.css's two dark rules, with or without data-theme */
+      color-scheme: light;
+      --bg: #FFFFFF; --surface: #FFFFFF; --surface-2: #F2F0EB; --surface-3: #E7E4DD;
+      --text: #1D1B18; --text-2: #4B4842; --text-3: #6B675F; --text-inverse: #FFFFFF;
+      --border: #E4E1DA; --border-ctl: #C6C1B7; --border-strong: #8A857B; --divider: #EDEAE4;
+      --brand: #1D1B18; --brand-hover: #35322D; --brand-press: #0B0A09; --brand-ink: #FFFFFF; --focus: #2563EB;
+      --ink: #000; --muted: #4B4842; --line: #9A958C;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #fff; color: var(--ink); font: 14px/1.35 var(--font); }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 16px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px)); }
+    .top { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 16px; flex-wrap: wrap; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .top h1 { margin: 0; font-size: 22px; font-weight: 650; }
+    .top p { color: var(--muted); margin: 4px 0 0; max-width: 60ch; }
+    .top-btns { display: flex; gap: 8px; }
+    .top-btns .btn { --ctl-h: 44px; text-decoration: none; }
+    .pform[hidden] { display: none; }
+    #choose { flex: 1 1 100%; }
+    .choose-h { margin: 0 0 8px; font-size: 16px; font-weight: 650; }
+    .choose-groups { display: flex; flex-wrap: wrap; gap: 8px 32px; }
+    .choose-gn { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+    .choose-row { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; }
+    .choose-row input { width: 22px; height: 22px; margin: 0; flex: none; accent-color: var(--brand); }
+    .choose-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .choose-btns .btn { --ctl-h: 44px; }
+    .pform { margin: 0 0 32px; break-inside: avoid; page-break-inside: avoid; }
+    .pform h2 { margin: 0; font-size: 18px; font-weight: 700; }
+    .pform .meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; color: var(--muted); font-size: 12px; padding-bottom: 6px; margin-bottom: 2px; border-bottom: 2px solid var(--ink); }
+    .pform .meta b { color: var(--ink); font-weight: 600; }
+    .f { display: grid; grid-template-columns: 9.5rem 1fr; gap: 10px; align-items: end; min-height: 34px; padding: 7px 0 6px; border-bottom: 1px solid #D0CCC4; }
+    .f .l { font-weight: 600; }
+    .f .l small { display: block; font-weight: 400; color: var(--muted); }
+    .blank { border-bottom: 1px solid var(--ink); min-height: 22px; }
+    .tall { min-height: 64px; }
+    .boxes { display: flex; gap: 6px; }
+    .boxes span { width: 3rem; height: 30px; border: 1px solid var(--ink); display: inline-grid; place-items: end center; font-size: 10px; color: var(--muted); padding-bottom: 1px; }
+    .ticks { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+    .ticks span::before { content: ""; display: inline-block; width: 13px; height: 13px; border: 1.25px solid var(--ink); margin-right: 6px; vertical-align: -2px; }
+    .ticks .write { flex: 1 1 8rem; display: flex; align-items: center; white-space: nowrap; }
+    .ticks .write::before { flex: none; }
+    .ticks .write::after { content: ""; flex: 1; min-width: 5rem; margin-left: 6px; align-self: flex-end; border-bottom: 1px solid var(--ink); }
+    .pgroup { margin: 10px 0 4px; padding-left: 10px; border-left: 2px solid var(--ink); }
+    .pgroup > .l { font-weight: 700; }
+    .pgroup .f:last-child { border-bottom: 0; }
+    @page { margin: 12mm; }
+    @media print {
+      .top, #choose { display: none; }
+      .wrap { padding: 0; max-width: none; }
+      .pform { page-break-after: always; margin: 0; }
+      .pform.last { page-break-after: auto; }
+      .f { border-bottom-color: #999; }
+    }
+    @media (max-width: 520px) { .f { grid-template-columns: 1fr; align-items: stretch; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Paper forms</h1>
+        <p>The app's questions on paper, for a day without a phone. Tick the forms to print, one per task. Type them in later, with the real date.</p>
+      </div>
+      <div class="top-btns">
+        <a class="btn btn-secondary" id="back" href="./">Back to the app</a>
+        <button type="button" id="print" class="btn btn-primary">Print</button>
+      </div>
+      <div id="choose"></div>
+    </div>
+    <div id="forms"></div>
+  </div>
+  <script src="config.js"></script>
+  <script src="schema.js"></script>
+  <script src="paper.js"></script>
+</body>
+</html>

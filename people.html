@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F7F6F3">
+  <title>Cocoahead People</title>
+  <link rel="icon" href="brand/batchstory-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="brand/batchstory-icon-apple-180.png">
+  <link rel="preload" href="fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/zilla-slab-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="ui.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="fresh.js"></script>
+  <script src="config.js"></script>
+</head>
+<body class="admin shell">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="appbar">
+    <div class="appbar-in">
+      <button type="button" class="btn btn-secondary btn-icon side-open" id="side-open" aria-label="Menu" aria-controls="side-nav" aria-expanded="false"><i data-icon="menu"></i></button>
+      <a class="brand" href="dashboard.html"><img src="icons/cocoahead-64.png" alt="" width="24" height="24" data-brand-logo><img class="wordmark" alt="" data-brand-wordmark hidden><span data-brand="company">Cocoahead</span></a>
+      <nav aria-label="Main" id="side-nav">
+        <a href="dashboard.html" data-nav="home"><i data-icon="house" data-size="16"></i>Home</a>
+        <div class="nav-group" role="group" aria-labelledby="nav-g-production">
+          <span class="nav-g" id="nav-g-production">Production</span>
+          <a href="dashboard.html#inventory" data-nav="stock"><i data-icon="boxes" data-size="16"></i>Inventory</a>
+          <a href="dashboard.html#ferments" data-nav="ferments"><i data-icon="bean" data-size="16"></i>Ferments</a>
+          <a href="dashboard.html#roasting" data-nav="roasting"><i data-icon="flame" data-size="16"></i>Roasting</a>
+          <a href="dashboard.html#making" data-nav="making"><i data-icon="blend" data-size="16"></i>Making</a>
+          <a href="dashboard.html#batches" data-nav="batches"><i data-icon="cookie" data-size="16"></i>Batches</a>
+          <a href="dashboard.html#season" data-nav="season"><i data-icon="chart-line" data-size="16"></i>Season</a>
+        </div>
+        <div class="nav-group" role="group" aria-labelledby="nav-g-records">
+          <span class="nav-g" id="nav-g-records">Records</span>
+          <a href="entries.html" data-nav="entries" id="entries-link"><i data-icon="list" data-size="16"></i>Entries</a>
+          <a href="labels.html" data-nav="labels"><i data-icon="tag" data-size="16"></i>Labels</a>
+          <a href="finances.html" data-nav="finances" id="finances-link"><i data-icon="banknote" data-size="16"></i>Finances</a>
+          <a href="exports.html" data-nav="exports" id="exports-link"><i data-icon="download" data-size="16"></i>Exports</a>
+          <a href="scan.html" data-nav="scan" id="scan-link" data-scan-link hidden><i data-icon="image" data-size="16"></i>Scan a form</a>
+        </div>
+        <div class="nav-group" role="group" aria-labelledby="nav-g-setup">
+          <span class="nav-g" id="nav-g-setup">Admin</span>
+          <a href="people.html" data-nav="people" aria-current="page" id="people-link"><i data-icon="users" data-size="16"></i>People</a>
+          <a href="settings.html#track" data-nav="forms" id="track-link"><i data-icon="clipboard-list" data-size="16"></i>Questions</a>
+          <a href="lists.html" data-nav="lists" id="lists-link"><i data-icon="list-checks" data-size="16"></i>Answer choices</a>
+          <a href="settings.html" data-nav="company" id="settings-link"><i data-icon="settings" data-size="16"></i>Settings</a>
+          <a href="settings.html#history" data-nav="history" id="history-link"><i data-icon="history" data-size="16"></i>Change log</a>
+        </div>
+      </nav>
+      <div class="appbar-tools"><span class="by-lockup" data-brand-poweredby hidden></span></div>
+    </div>
+  </header>
+  <nav class="tabbar" aria-label="Sections" id="tabbar">
+    <a href="dashboard.html" data-bar="home"><i data-icon="house" data-size="20"></i><span>Home</span></a>
+    <a href="dashboard.html#inventory" data-bar="production"><i data-icon="bean" data-size="20"></i><span>Production</span></a>
+    <a href="entries.html" data-bar="entries"><i data-icon="list" data-size="20"></i><span>Entries</span></a>
+    <button type="button" id="more-open" data-bar="more" aria-controls="side-nav" aria-expanded="false" aria-current="page"><i data-icon="menu" data-size="20"></i><span>More</span></button>
+  </nav>
+
+  <main id="content" class="page people-page">
+    <div class="page-head">
+      <div>
+        <h1>People</h1>
+        <p class="page-sub" id="summary">Who logs entries on a phone, and who signs in here.</p>
+      </div>
+      <div class="page-tools">
+        <span class="meta" id="updated"></span>
+        <button type="button" class="btn btn-secondary btn-icon" id="refresh" aria-label="Refresh" title="Refresh"><i data-icon="refresh-cw"></i></button>
+        <button type="button" class="btn btn-primary" id="invite-open" hidden>Invite person</button>
+      </div>
+    </div>
+
+    <div id="connect" class="notice info" role="status" data-signin-alt hidden>
+      <i data-icon="info" data-size="20"></i>
+      <div class="notice-body">
+        <span class="notice-title">Or use the admin link</span>
+        <span>If you have the admin link from the Sheet (<b>Cocoahead → Get admin link (admins only)</b>), open it here, or paste it:</span>
+        <div class="inline-form">
+          <input type="text" id="connect-link" placeholder="Paste the admin link" aria-label="Admin link">
+          <button type="button" class="btn btn-primary" id="connect-btn">Connect</button>
+        </div>
+      </div>
+    </div>
+    <div id="problem" class="notice bad" role="alert" hidden><i data-icon="circle-alert" data-size="20"></i><div class="notice-body" id="problem-text"></div></div>
+    <div id="loading" hidden></div>
+
+    <section id="main" hidden>
+      <div class="notice warn" id="paused-banner" role="status" hidden>
+        <i data-icon="triangle-alert" data-size="20"></i>
+        <div class="notice-body"><span class="notice-title" id="paused-title"></span>
+          <span>The dashboard and all changes are off for now. You can still sign in, and export everything from the <a href="exports.html" id="paused-export">Exports page</a>.</span></div>
+      </div>
+      <!-- People who opened an expired link and pressed "Ask for a new invite" (2.0.0). Every admin sees it, and who resent it. -->
+      <div class="notice warn asks" id="asks-banner" role="status" hidden>
+        <i data-icon="user" data-size="20"></i>
+        <div class="notice-body" id="asks-body"></div>
+      </div>
+
+      <div class="subtabs people-tabs" role="tablist" aria-label="Who to show" id="tabs">
+        <button type="button" role="tab" id="ptab-active" data-tab="active" aria-controls="view-people" aria-selected="true">Active <span class="tab-n" id="n-active"></span></button>
+        <button type="button" role="tab" id="ptab-off" data-tab="off" aria-controls="view-people" aria-selected="false" tabindex="-1">Switched off <span class="tab-n" id="n-off"></span></button>
+        <button type="button" role="tab" id="ptab-devices" data-tab="devices" aria-controls="view-devices" aria-selected="false" tabindex="-1">Shared devices <span class="tab-n" id="n-devices"></span></button>
+        <button type="button" role="tab" id="ptab-shared" data-tab="shared" aria-controls="shared-card" aria-selected="false" tabindex="-1" hidden>Shared links</button>
+      </div>
+
+      <div id="view-people" role="tabpanel" aria-labelledby="ptab-active">
+        <div class="tablebar" id="bar">
+          <label class="search"><i data-icon="search"></i><input type="search" id="q" placeholder="Search name or email" aria-label="Search people" autocomplete="off"></label>
+          <label class="filter">What they do <select name="role" id="f-role">
+            <option value="">All</option><option value="admin">Admin</option>
+            <option value="fermentation" data-area="fermentation">Fermentation</option><option value="roasting" data-area="roasting">Roasting</option><option value="making" data-area="making">Making</option>
+            <option value="none">Dashboard only</option></select></label>
+          <label class="filter">Status <select name="status" id="f-status">
+            <option value="">All</option><option value="ok">Set up</option><option value="wait">Waiting for them</option><option value="you">Needs you</option></select></label>
+          <span class="count" id="count" aria-live="polite"></span>
+        </div>
+        <div class="tablebox" id="people-box">
+          <div class="table-wrap"><table class="table rowlist people" id="people-table">
+            <thead><tr>
+              <th data-sort="text">Name</th><th data-sort="text">What they do</th><th data-sort="text" class="col-email">Email</th><th data-sort="text">Sees prices</th>
+              <th data-sort="text">Status</th><th data-sort="text">Last seen</th><th><span class="sr-only">Actions</span></th><th class="col-go"></th>
+            </tr></thead>
+            <tbody id="people"></tbody>
+          </table></div>
+          <p class="table-empty" hidden>No matches. Clear the search or the filters.</p>
+        </div>
+        <div class="tablebox" id="people-none" hidden></div>
+      </div>
+
+      <!-- 2.7.0: tablets that several people take turns on (each with their PIN) -->
+      <div id="view-devices" role="tabpanel" aria-labelledby="ptab-devices" hidden>
+        <div class="tablebar" id="dev-bar">
+          <p class="shared-sub">Tablets that several people take turns on, each with their own PIN. Entries are recorded under the person whose turn it was.</p>
+          <button type="button" class="btn btn-primary btn-sm" id="device-add">Add a shared device</button>
+        </div>
+        <div class="tablebox" id="devices-box">
+          <div class="table-wrap"><table class="table rowlist shared-devices" id="devices-table">
+            <thead><tr><th data-sort="text">Name</th><th data-sort="text">For</th><th data-sort="text">Who can use it</th><th data-sort="text">Last seen</th><th data-sort="text">App</th><th data-sort="text">Status</th><th class="col-go"></th></tr></thead>
+            <tbody id="devices"></tbody>
+          </table></div>
+        </div>
+        <div class="tablebox" id="devices-none" hidden></div>
+      </div>
+
+      <section class="shared-links" id="shared-card" role="tabpanel" aria-labelledby="ptab-shared" hidden>
+        <p class="shared-sub">The old phone setup link and admin link from the Sheet menu. When everyone has their own link and neither has been used for a week, retire them.</p>
+        <ul class="statstrip" id="shared-cells"></ul>
+        <div class="actions" id="shared-actions"></div>
+        <div class="confirm" id="shared-confirm" hidden></div>
+      </section>
+    </section>
+
+    <!-- Invite person: kept here (not shown) and moved into the side panel while it is open, so its IDs are always on the page. -->
+    <div id="invite-holder" hidden>
+      <div class="invite-panel" id="invite-card">
+        <form id="invite-form" novalidate>
+          <div class="f"><label for="inv-name">Name</label><input type="text" id="inv-name" autocomplete="off" maxlength="60" placeholder="For example: Sam Test"></div>
+          <div class="f"><label for="inv-email">Email <span class="opt" id="inv-email-opt">(optional)</span></label><input type="email" id="inv-email" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="120" placeholder="sam@example.com" aria-describedby="inv-email-hint">
+            <span class="hint" id="inv-email-hint">Only needed if you send the link by email.</span></div>
+          <fieldset class="ticks" id="inv-ticks">
+            <legend>What they do</legend>
+            <div class="chips" id="inv-areas"></div>
+            <p class="hint" id="inv-hint"></p>
+            <label class="check" for="inv-admin"><input type="checkbox" id="inv-admin"> <span>Admin <span class="muted">(everything, including this page)</span></span></label>
+            <label class="check" for="inv-money"><input type="checkbox" id="inv-money" aria-describedby="inv-money-hint"> <span>Can see prices and payments</span></label>
+            <p class="hint" id="inv-money-hint">Anyone whose forms ask for a price can type one. This also lets them see prices and payments afterwards.</p>
+          </fieldset>
+          <div class="f"><label for="inv-note">Note <span class="opt">(only admins see this)</span></label><input type="text" id="inv-note" autocomplete="off" maxlength="300" placeholder="Optional: where they work, which phone"></div>
+          <fieldset class="ticks" id="inv-via-set">
+            <legend>Send the link by</legend>
+            <div class="chips" id="inv-via">
+              <label class="chip-opt" for="inv-via-whatsapp"><input type="radio" name="inv-via" id="inv-via-whatsapp" value="whatsapp" checked><span>WhatsApp</span></label>
+              <label class="chip-opt" for="inv-via-qr"><input type="radio" name="inv-via" id="inv-via-qr" value="qr"><span>QR code</span></label>
+              <label class="chip-opt" for="inv-via-copy"><input type="radio" name="inv-via" id="inv-via-copy" value="copy"><span>Copy link</span></label>
+              <label class="chip-opt" for="inv-via-email"><input type="radio" name="inv-via" id="inv-via-email" value="email"><span>Email</span></label>
+            </div>
+            <p class="hint" id="inv-via-hint"></p>
+          </fieldset>
+          <input type="checkbox" id="inv-send" hidden disabled>
+          <p class="err" id="inv-err" role="alert" hidden></p>
+        </form>
+
+        <div id="result" class="result" hidden>
+          <div class="who"><b id="result-title" tabindex="-1"></b><span class="note" id="result-role"></span></div>
+          <p class="notice ok result-mail" id="result-mail" role="status" hidden></p>
+          <div class="send" id="result-send">
+            <button type="button" class="btn btn-secondary" id="send-email"><i data-icon="mail"></i><span id="send-email-text">Email</span></button>
+            <button type="button" class="btn btn-secondary" id="send-wa"><i data-icon="message-circle"></i>Open WhatsApp</button>
+            <button type="button" class="btn btn-secondary" id="send-qr" aria-expanded="false"><i data-icon="qr-code"></i>QR code</button>
+            <button type="button" class="btn btn-secondary" id="copy"><i data-icon="copy"></i><span id="copy-text">Copy link</span></button>
+          </div>
+          <div class="qr-box" id="qr-box" role="img" aria-label="QR code of the link" hidden></div>
+          <p class="hint" id="qr-hint" hidden>Point their phone's camera at this.</p>
+          <p class="once" id="result-warn"></p>
+          <p class="once" id="result-later" hidden></p>
+          <input type="hidden" id="result-link">
+        </div>
+      </div>
+      <div class="invite-foot" id="invite-foot">
+        <button type="button" class="btn btn-ghost" id="inv-cancel">Cancel</button>
+        <button type="submit" form="invite-form" class="btn btn-primary" id="inv-go">Create link</button>
+        <button type="button" class="btn btn-secondary" id="inv-another" hidden>Invite another</button>
+        <button type="button" class="btn btn-primary" id="done" hidden>Done</button>
+      </div>
+    </div>
+
+    <p class="how"><a href="help.html#links">How links and devices work</a></p>
+    <p class="page-foot"><span class="by-lockup" data-brand-poweredby hidden></span></p>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="icons.js"></script>
+  <script src="common.js"></script>
+  <script src="admin.js"></script>
+  <script src="signin.js"></script>
+  <script src="vendor/qrcode.js"></script>
+  <script src="people.js"></script>
+</body>
+</html>
